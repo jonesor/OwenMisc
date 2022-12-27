@@ -2,7 +2,8 @@
 #'
 #' Generates an iCalendar entry in plain text format for an event with the specified start time, duration, time zone, title, location, and optional recurrence rule.
 #'
-#' @param start_time A character string representing the start time of the event in the format "YYYY-MM-DD HH:MM:SS".
+#' @param start_date A character string representing the start time of the event in the format "YYYY-MM-DD".
+#' @param start_time A character string representing the start time of the event in the format "HH:MM:SS".
 #' @param duration A character string representing the duration of the event in the format "HH:MM:SS".
 #' @param time_zone A character string representing the time zone of the event.
 #' @param title A character string representing the title of the event.
