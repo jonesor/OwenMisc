@@ -75,3 +75,20 @@ for (i in 1:nrow(events)) {
 
 # Close file
 close(file)
+
+
+# Read in the ics file
+ics_data <- readLines("deepWorkSchedule.ics")
+
+# Remove the unnecessary VCALENDAR components
+ics_data <- ics_data[!grepl("BEGIN:VCALENDAR", ics_data)]
+ics_data <- ics_data[!grepl("END:VCALENDAR", ics_data)]
+
+# Add a single VCALENDAR component at the beginning of the file
+ics_data <- c("BEGIN:VCALENDAR", ics_data)
+
+# Add a single VCALENDAR component at the end of the file
+ics_data <- c(ics_data, "END:VCALENDAR")
+
+# Write the modified ics data to a new file
+writeLines(ics_data, "deepWorkSchedule.ics")
