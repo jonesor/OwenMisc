@@ -1,0 +1,45 @@
+Monday:
+
+9-9:15am: Review tasks
+9:15-11am: Deep work
+11am-12pm: Exercise
+12-12:45pm: Lunch break
+12:45-2pm: Service act.
+2-4pm: Deep work
+4-4:15pm: Review tasks
+Tuesday:
+
+9-9:15am: Review tasks
+9:15-11am: Deep work
+11am-12pm: Teaching Prep
+12-12:45pm: Lunch break
+12:45-2pm: Service act.
+2-4pm: Deep work
+4-4:15pm: Review tasks
+Wednesday:
+
+9-9:15am: Review tasks
+9:15-11am: Deep work
+11am-12pm: Exercise
+12-12:45pm: Lunch break
+12:45-2pm: Service act.
+2-4pm: Deep work
+4-4:15pm: Review tasks
+Thursday:
+
+9-9:15am: Review tasks
+9:15-11am: Deep work
+11am-12pm: Teaching Prep
+12-12:45pm: Lunch break
+12:45-2pm: Service act.
+2-4pm: Deep work
+4-4:15pm: Review tasks
+Friday:
+
+9-9:15am: Review tasks
+9:15-11am: Deep work
+11am-12pm: Exercise
+12-12:45pm: Lunch break
+12:45-2pm: Service act.
+2-4pm: Deep work
+4-4:15pm: Review tasks
