@@ -25,7 +25,7 @@ generate_ics <- function(start_datetime, duration, time_zone, title, location, r
   tz <- tz(time_zone)
   
   # Convert start time to POSIXct object
-  start_time <- as.POSIXct(start_time, tz = tz)
+  start_time <- as.POSIXct(start_datetime, tz = tz)
   
   # Convert duration to seconds
   duration_secs <- duration * 60
