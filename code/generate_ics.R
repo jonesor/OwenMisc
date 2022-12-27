@@ -2,9 +2,8 @@
 #'
 #' Generates an iCalendar entry in plain text format for an event with the specified start time, duration, time zone, title, location, and optional recurrence rule.
 #'
-#' @param start_date A character string representing the start time of the event in the format "YYYY-MM-DD".
-#' @param start_time A character string representing the start time of the event in the format "HH:MM:SS".
-#' @param duration A character string representing the duration of the event in the format "HH:MM:SS".
+#' @param start_datetime A character string representing the start time of the event in the format "YYYY-MM-DD HH:MM:SS".
+#' @param duration A numeric value representing duration in minutes.
 #' @param time_zone A character string representing the time zone of the event.
 #' @param title A character string representing the title of the event.
 #' @param location A character string representing the location of the event.
@@ -12,34 +11,24 @@
 #' @return A character string containing the iCalendar entry in plain text format.
 #' @export
 #' @examples
-#' generate_ics("2022-12-27 15:00:00", "1 hour", "America/New_York", "Meeting", "Conference Room")
-#' generate_ics("2022-12-27 15:00:00", "1 hour", "America/New_York", "Meeting", "Conference Room", "FREQ=DAILY;COUNT=5")
+#' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room")
+#' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room", "FREQ=DAILY;COUNT=5")
 
-generate_ics <- function(start_date, start_time, duration, time_zone, title, location, recurrence_rule = NULL) {
-  # Check that start date and time are valid
-  if (!is.Date(as.Date(start_date))) {
-    stop("Invalid start date")
-  }
-  if (!is.POSIXt(as.POSIXct(start_time, format = "%T"))) {
-    stop("Invalid start time")
-  }
+generate_ics <- function(start_datetime, duration, time_zone, title, location, recurrence_rule = NULL) {
   
   # Check that duration is a valid duration string
-  if (!is.difftime(as.difftime(duration))) {
-    stop("Invalid duration")
-  }
+  #if (!is.numeric(duration)) {
+  #  stop("Invalid duration (should be integer minutes)")
+  #}
   
   # Convert time zone to tz object
   tz <- tz(time_zone)
-  
-  # Combine date and time into single string
-  start_time <- paste(start_date, start_time, sep = " ")
   
   # Convert start time to POSIXct object
   start_time <- as.POSIXct(start_time, tz = tz)
   
   # Convert duration to seconds
-  duration_secs <- as.difftime(duration)
+  duration_secs <- duration * 60
   
   # Calculate end time
   end_time <- start_time + duration_secs
