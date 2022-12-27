@@ -14,10 +14,12 @@
 #' generate_ics("2022-12-27 15:00:00", "1 hour", "America/New_York", "Meeting", "Conference Room")
 #' generate_ics("2022-12-27 15:00:00", "1 hour", "America/New_York", "Meeting", "Conference Room", "FREQ=DAILY;COUNT=5")
 
-generate_ics <- function(start_time, duration, time_zone, title, location, recurrence_rule = NULL) {
-  require(lubridate)
-    # Check that start time is a valid date-time string
-  if (!is.POSIXct(as.POSIXct(start_time, tz = time_zone))) {
+generate_ics <- function(start_date, start_time, duration, time_zone, title, location, recurrence_rule = NULL) {
+  # Check that start date and time are valid
+  if (!is.Date(as.Date(start_date))) {
+    stop("Invalid start date")
+  }
+  if (!is.POSIXt(as.POSIXct(start_time, format = "%T"))) {
     stop("Invalid start time")
   }
   
@@ -28,6 +30,9 @@ generate_ics <- function(start_time, duration, time_zone, title, location, recur
   
   # Convert time zone to tz object
   tz <- tz(time_zone)
+  
+  # Combine date and time into single string
+  start_time <- paste(start_date, start_time, sep = " ")
   
   # Convert start time to POSIXct object
   start_time <- as.POSIXct(start_time, tz = tz)
