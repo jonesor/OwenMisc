@@ -31,32 +31,6 @@ events <- left_join(next_work_week,events) %>%
 
 head(events)
 
-library(stringr)
-
-parse_duration_string <- function(duration_string) {
-  # Extract the numeric value from the text string
-  duration_minutes <- as.numeric(str_extract(duration_string, "\\d+"))
-  
-  # Check for the presence of specific time units in the text string
-  if (str_detect(duration_string, "hour")) {
-    # Multiply the numeric value by 60 to convert it to minutes
-    duration_minutes <- duration_minutes * 60
-  } else if (str_detect(duration_string, "minutes")) {
-    # Leave the numeric value as is
-  } else {
-    # Set the numeric value to 0 if no time units are detected
-    duration_minutes <- 0
-  }
-  
-  # Return the numeric value in minutes
-  return(duration_minutes)
-}
-
-events$duration_mins <- sapply(events$Duration, parse_duration_string)
-events
-  
-
-
 # Open file for writing
 file <- file("deepWorkSchedule.ics", "w")
 
