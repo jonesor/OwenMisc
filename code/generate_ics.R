@@ -16,11 +16,6 @@
 
 generate_ics <- function(start_datetime, duration, time_zone, title, location, recurrence_rule = NULL) {
   
-  # Check that duration is a valid duration string
-  #if (!is.numeric(duration)) {
-  #  stop("Invalid duration (should be integer minutes)")
-  #}
-  
   # Convert time zone to tz object
   tz <- tz(time_zone)
   
