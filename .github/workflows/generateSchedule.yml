@@ -31,6 +31,6 @@ jobs:
       with:
         commit_message: 'Update work schedule'
         file_pattern: 'code/deepWorkSchedule.ics'
-        branch: master
+        branch: main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
