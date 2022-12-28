@@ -42,7 +42,8 @@ for (i in 1:nrow(events)) {
     duration = events$Duration[i],
     time_zone = "Europe/Copenhagen",
     title = events$Activity[i],
-    location = "Office", recurrence_rule = NULL
+    location = "Office", recurrence_rule = NULL, 
+    freebusy = as.character(ifelse(grepl(pattern = "Deep|Lunch|Exercise", x = events$Activity[i])>0,"BUSY","FREE"))
   )
 
   # Write iCalendar entry to file
@@ -57,6 +58,7 @@ close(file)
 
 # Read in the ics file
 ics_data <- readLines("deepWorkSchedule.ics")
+ics_data <- ics_data[!ics_data==""]
 
 # Remove the unnecessary VCALENDAR components
 ics_data <- ics_data[!grepl("BEGIN:VCALENDAR", ics_data)]
