@@ -6,12 +6,13 @@
 # generate_ics function. The entries are then written to a file using the
 # writeLines function.
 
-# Load lubridate library
-library(lubridate)
+# Load lubridate and magrittr library
+require(lubridate)
+require(magrittr)
 
 # Load data frame with event information
 events <- read.csv("data/deepworkSchedule.csv")
-events
+
 
 # Date for next monday
 next_monday <- data.frame(date = seq(from = today(), by = "day", length.out = 7)) %>%
@@ -28,8 +29,6 @@ events <- left_join(next_work_week, events) %>%
   mutate(year = year(date), month = month(date), day = day(date)) %>%
   mutate(date_time = update(date_time_t, year = year, month = month, day = day)) %>%
   select(date_time, Duration, Activity)
-
-head(events)
 
 # Open file for writing
 file <- file("deepWorkSchedule.ics", "w")
