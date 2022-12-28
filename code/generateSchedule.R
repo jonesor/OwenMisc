@@ -7,9 +7,9 @@
 # writeLines function.
 
 # Load lubridate and magrittr library
-require(lubridate)
-require(magrittr)
-require(dplyr)
+library(lubridate)
+library(magrittr)
+library(dplyr)
 
 # Load data frame with event information
 events <- read.csv("data/deepworkSchedule.csv")
