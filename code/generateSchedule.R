@@ -9,25 +9,26 @@
 # Load lubridate and magrittr library
 require(lubridate)
 require(magrittr)
+require(dplyr)
 
 # Load data frame with event information
 events <- read.csv("data/deepworkSchedule.csv")
 
 
 # Date for next monday
-next_monday <- data.frame(date = seq(from = today(), by = "day", length.out = 7)) %>%
-  mutate(Day = wday(date, label = TRUE, abbr = FALSE)) %>%
-  filter(Day == "Monday") %>%
+next_monday <- data.frame(date = seq(from = today(), by = "day", length.out = 7)) |>
+  mutate(Day = wday(date, label = TRUE, abbr = FALSE)) |>
+  filter(Day == "Monday") |>
   pull(date)
 
 # Create a data frame with the day of the week and date
-next_work_week <- data.frame(date = seq(from = next_monday, by = "day", length.out = 5)) %>%
+next_work_week <- data.frame(date = seq(from = next_monday, by = "day", length.out = 5)) |>
   mutate(Day = wday(date, label = TRUE, abbr = FALSE))
 
-events <- left_join(next_work_week, events) %>%
-  mutate(date_time_t = parse_date_time(Start.Time, "%I:%M %p")) %>%
-  mutate(year = year(date), month = month(date), day = day(date)) %>%
-  mutate(date_time = update(date_time_t, year = year, month = month, day = day)) %>%
+events <- left_join(next_work_week, events) |>
+  mutate(date_time_t = parse_date_time(Start.Time, "%I:%M %p")) |>
+  mutate(year = year(date), month = month(date), day = day(date)) |>
+  mutate(date_time = update(date_time_t, year = year, month = month, day = day)) |>
   select(date_time, Duration, Activity)
 
 # Open file for writing
