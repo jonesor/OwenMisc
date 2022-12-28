@@ -1,0 +1,36 @@
+name: Run R code
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+
+jobs:
+  run-r-code:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      uses: r-actions/toolkit@v1
+      with:
+        r-version: 4.0.5
+        script: |
+          install.packages(c("lubridate", "magrittr"))
+    - name: Run R code
+      uses: r-actions/toolkit@v1
+      with:
+        r-version: 4.0.5
+        script: |
+          Rscript -e "source('code/generate_ics.R'); source('code/generateSchedule.R')"
+    - name: Upload output file
+      uses: actions/upload-artifact@v2
+      with:
+        name: workSchedule.ics
+        path: code/deepWorkSchedule.ics
+    - name: Commit and push changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: 'Update work schedule'
+        file_pattern: 'code/deepWorkSchedule.ics'
+        branch: master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
