@@ -18,7 +18,7 @@ generate_ics <- function(start_datetime, duration, time_zone, title, location, r
 
   # Validation
   # Check that duration is a positive numeric value
-  if (!is.numeric(duration) || !is.positive(duration)) {
+  if (!is.numeric(duration) || !duration>0) {
     stop("Error: duration must be a positive numeric value")
   }
 
