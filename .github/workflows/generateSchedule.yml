@@ -1,4 +1,4 @@
-name: Run R code
+name: generateSchedule
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-r-code:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Install dependencies
@@ -16,7 +16,7 @@ jobs:
         r-version: 4.0.5
         script: |
           install.packages(c("lubridate", "magrittr"))
-    - name: Run R code
+    - name: generateSchedule
       uses: r-lib/actions/setup-r@v2
       with:
         r-version: 4.0.5
@@ -25,7 +25,7 @@ jobs:
     - name: Upload output file
       uses: actions/upload-artifact@v2
       with:
-        name: workSchedule.ics
+        name: Upload_deepworkSchedule.ics
         path: code/deepWorkSchedule.ics
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v4
