@@ -8,13 +8,14 @@
 #' @param title A character string representing the title of the event.
 #' @param location A character string representing the location of the event.
 #' @param recurrence_rule A character string representing the recurrence rule for the event in the format defined by the iCalendar specification.
+#' @param freebusy A character string of FREE or BUSY indicating if the event should be indicated as Free/Busy in Outlook.
 #' @return A character string containing the iCalendar entry in plain text format.
 #' @export
 #' @examples
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room")
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room", "FREQ=DAILY;COUNT=5")
 #'
-generate_ics <- function(start_datetime, duration, time_zone, title, location, recurrence_rule = NULL) {
+generate_ics <- function(start_datetime, duration, time_zone, title, location, recurrence_rule = NULL, freebusy = "BUSY") {
 
   # Validation
   # Check that duration is a positive numeric value
@@ -55,7 +56,9 @@ TZID:%s
 SUMMARY:%s
 LOCATION:%s
 %s
+X-MICROSOFT-CDO-BUSYSTATUS:%s
 END:VEVENT
+ 
 END:VCALENDAR"
 
   # Fill in template with input values
@@ -67,7 +70,8 @@ END:VCALENDAR"
       tz,
       title,
       location,
-      ""
+      "",
+      freebusy
     )
   } else {
     ics <- sprintf(
@@ -77,7 +81,8 @@ END:VCALENDAR"
       tz,
       title,
       location,
-      paste0("RRULE:", recurrence_rule)
+      paste0("RRULE:", recurrence_rule),
+      freebusy
     )
   }
 
