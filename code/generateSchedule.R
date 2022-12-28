@@ -67,7 +67,7 @@ for (i in 1:nrow(events)) {
                       duration = events$duration_mins[i],  
                       time_zone = "Europe/Copenhagen", 
                       title = events$Activity[i], 
-                      location = "NA", recurrence_rule = NULL)
+                      location = "Office", recurrence_rule = NULL)
 
   # Write iCalendar entry to file
   writeLines(ics, file)
