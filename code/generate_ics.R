@@ -54,6 +54,7 @@ VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
+UID:ical-%s
 DTSTART:%s
 DTEND:%s
 TZID:%s
@@ -69,6 +70,7 @@ END:VCALENDAR"
   if (is.null(recurrence_rule)) {
     ics <- sprintf(
       ics_template,
+      paste(sample(c(letters,0:9, rep("-",2))), collapse = ""),
       format(start_time, "%Y%m%dT%H%M%S"),
       format(end_time, "%Y%m%dT%H%M%S"),
       tz,
