@@ -40,7 +40,7 @@ generate_ics <- function(start_datetime, duration, time_zone, title, location, r
     stop("Error: start_datetime must be a character string in the format YYYY-MM-DD HH:MM:SS")
   }
 
-
+  
   # Convert duration to seconds
   duration_secs <- duration * 60
 
@@ -49,6 +49,10 @@ generate_ics <- function(start_datetime, duration, time_zone, title, location, r
 
   # Define iCalendar template
   ics_template <- "BEGIN:VCALENDAR
+PRODID:-//ATFutures/ical //EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
 BEGIN:VEVENT
 DTSTART:%s
 DTEND:%s
