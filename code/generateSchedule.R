@@ -38,7 +38,7 @@ file <- file("deepWorkSchedule.ics", "w")
 for (i in 1:nrow(events)) {
   # Generate iCalendar entry for event
   ics <- generate_ics(start_datetime = events$date_time[i], 
-                      duration = events$duration_mins[i],  
+                      duration = events$Duration[i],  
                       time_zone = "Europe/Copenhagen", 
                       title = events$Activity[i], 
                       location = "Office", recurrence_rule = NULL)
