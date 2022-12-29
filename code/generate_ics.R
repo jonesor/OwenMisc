@@ -31,16 +31,12 @@ generate_ics <- function(start_datetime, duration, time_zone, title, location, r
   # Convert time zone to tz object
   tz <- tz(time_zone)
 
-  # Convert start time to POSIXct object
-  # start_time <- as.POSIXct(start_datetime, tz = tz)
-
   # Check that start_datetime is a character string in the correct format
   start_time <- strptime(start_datetime, format = "%Y-%m-%d %H:%M:%S", tz = tz)
   if (is.na(start_time)) {
     stop("Error: start_datetime must be a character string in the format YYYY-MM-DD HH:MM:SS")
   }
 
-  
   # Convert duration to seconds
   duration_secs <- duration * 60
 
@@ -70,7 +66,7 @@ END:VCALENDAR"
   if (is.null(recurrence_rule)) {
     ics <- sprintf(
       ics_template,
-      paste(sample(c(letters,0:9, rep("-",2))), collapse = ""),
+      paste(sample(x = c(letters,0:9, rep("-",2)),replace = TRUE,size = 25), collapse = ""),
       format(start_time, "%Y%m%dT%H%M%S"),
       format(end_time, "%Y%m%dT%H%M%S"),
       tz,
