@@ -66,7 +66,7 @@ END:VCALENDAR"
   if (is.null(recurrence_rule)) {
     ics <- sprintf(
       ics_template,
-      paste(sample(x = c(letters,0:9, rep("-",2)),replace = TRUE,size = 25), collapse = ""),
+      paste(sample(x = c(letters,0:9, rep("-",2)),replace = FALSE,size = 25), collapse = ""),
       format(start_time, "%Y%m%dT%H%M%S"),
       format(end_time, "%Y%m%dT%H%M%S"),
       tz,
