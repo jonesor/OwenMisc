@@ -20,7 +20,8 @@
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room", "FREQ=DAILY;COUNT=5")
 #'
 generate_ics <- function(start_datetime, duration, time_zone, title, location, recurrence_rule = NULL, freebusy = "BUSY") {
-  ics_random_seed_text <- paste0(start_datetime, duration, time_zone, title, location, recurrence_rule, freebusy)
+  
+  ics_random_seed_text <- paste0(start_datetime, duration, time_zone, title, location, ifelse(is.null(recurrence_rule),"NULL_value",recurrence_rule), freebusy)
   ics_random_seed <- char2seed(ics_random_seed_text, set = FALSE)
   set.seed(ics_random_seed)
 
@@ -34,6 +35,9 @@ generate_ics <- function(start_datetime, duration, time_zone, title, location, r
   if (!time_zone %in% OlsonNames()) {
     stop("Error: time_zone must be a valid time zone identifier")
   }
+
+  # Convert time zone to tz object
+  tz <- tz(time_zone)
 
   # Check that start_datetime is a character string in the correct format
   start_time <- strptime(start_datetime, format = "%Y-%m-%d %H:%M:%S", tz = tz)
