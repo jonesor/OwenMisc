@@ -10,6 +10,7 @@
 library(lubridate)
 library(magrittr)
 library(dplyr)
+library(TeachingDemos)
 
 # Load data frame with event information
 events <- read.csv("data/deepworkSchedule.csv")
