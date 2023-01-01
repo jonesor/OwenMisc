@@ -14,18 +14,15 @@ library(dplyr)
 # Load data frame with event information
 events <- read.csv("data/deepworkSchedule.csv")
 
+todayDate <- today()
+todayDayNumber <- wday(today(),abbr = FALSE, label = FALSE)
 
-# Date for next monday
-next_monday <- data.frame(date = seq(from = today(), by = "day", length.out = 7)) |>
-  mutate(Day = wday(date, label = TRUE, abbr = FALSE)) |>
-  filter(Day == "Monday") |>
-  pull(date)
+startDateOfWeek_Monday <- todayDate - todayDayNumber + 2
+next_work_weeks <- data.frame(date = seq(from = startDateOfWeek_Monday, by = "day", length.out = 21)) |>
+    mutate(Day = wday(date, label = TRUE, abbr = FALSE)) %>% 
+  filter(!Day %in% c("Saturday","Sunday"))
 
-# Create a data frame with the day of the week and date
-next_work_week <- data.frame(date = seq(from = next_monday, by = "day", length.out = 5)) |>
-  mutate(Day = wday(date, label = TRUE, abbr = FALSE))
-
-events <- left_join(next_work_week, events) |>
+events <- left_join(next_work_weeks, events) |>
   mutate(date_time_t = parse_date_time(Start.Time, "%I:%M %p")) |>
   mutate(year = year(date), month = month(date), day = day(date)) |>
   mutate(date_time = update(date_time_t, year = year, month = month, day = day)) |>
@@ -72,3 +69,4 @@ ics_data <- c(ics_data, "END:VCALENDAR")
 
 # Write the modified ics data to a new file
 writeLines(ics_data, "deepWorkSchedule.ics")
+
