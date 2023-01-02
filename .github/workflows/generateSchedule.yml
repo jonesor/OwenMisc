@@ -21,7 +21,7 @@ jobs:
           
       - name: Install dependencies
         run: |
-          install.packages(c("magrittr","dplyr", "lubridate"))
+          install.packages(c("magrittr","dplyr", "lubridate", "TeachingDemos"))
         shell: Rscript {0}
         
       - name: Update data
