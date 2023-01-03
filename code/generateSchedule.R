@@ -41,6 +41,7 @@ for (i in 1:nrow(events)) {
     time_zone = "Europe/Copenhagen",
     title = events$Activity[i],
     location = "Office", recurrence_rule = NULL, 
+    reminder_time = "5M",
     freebusy = as.character(ifelse(grepl(pattern = "Deep|Lunch|Exercise", x = events$Activity[i])>0,"BUSY","FREE"))
   )
 
