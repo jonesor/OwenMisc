@@ -9,7 +9,6 @@
 #' @param location A character string representing the location of the event.
 #' @param recurrence_rule A character string representing the recurrence rule for the event in the format defined by the iCalendar specification.
 #' @param freebusy A character string of FREE or BUSY indicating if the event should be indicated as Free/Busy in Outlook.
-#' @param reminder_time A character string representing the time before the start of the event at which the reminder should be triggered, formatted as a duration in the format "nHnMnS" where "n" represents the number of hours, minutes, or seconds, and "H", "M", and "S" are the respective time units. e.g. "5M" = 5 minutes.
 #' @return A character string containing the iCalendar entry in plain text format.
 #' 
 #' @importFrom TeachingDemos char2seed
@@ -19,38 +18,38 @@
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room")
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room", "FREQ=DAILY;COUNT=5")
 #'
-generate_ics <- function(start_datetime, duration, time_zone, title, location, reminder_time = "5M", recurrence_rule = NULL, freebusy = "BUSY") {
+generate_ics <- function(start_datetime, duration, time_zone, title, location, recurrence_rule = NULL, freebusy = "BUSY") {
   
   ics_random_seed_text <- paste0(start_datetime, duration, time_zone, title, location, ifelse(is.null(recurrence_rule),"NULL_value",recurrence_rule), freebusy)
   ics_random_seed <- char2seed(ics_random_seed_text, set = FALSE)
   set.seed(ics_random_seed)
-
+  
   # Validation
   # Check that duration is a positive numeric value
   if (!is.numeric(duration) || !duration > 0) {
     stop("Error: duration must be a positive numeric value")
   }
-
+  
   # Check that time_zone is a valid time zone identifier
   if (!time_zone %in% OlsonNames()) {
     stop("Error: time_zone must be a valid time zone identifier")
   }
-
+  
   # Convert time zone to tz object
   tz <- tz(time_zone)
-
+  
   # Check that start_datetime is a character string in the correct format
   start_time <- strptime(start_datetime, format = "%Y-%m-%d %H:%M:%S", tz = tz)
   if (is.na(start_time)) {
     stop("Error: start_datetime must be a character string in the format YYYY-MM-DD HH:MM:SS")
   }
-
+  
   # Convert duration to seconds
   duration_secs <- duration * 60
-
+  
   # Calculate end time
   end_time <- start_time + duration_secs
-
+  
   # Define iCalendar template
   ics_template <- "BEGIN:VCALENDAR
 PRODID:-//ATFutures/ical //EN
@@ -64,16 +63,12 @@ DTEND:%s
 TZID:%s
 SUMMARY:%s
 LOCATION:%s
-BEGIN:VALARM
-TRIGGER:-PT%s
-ACTION:DISPLAY
-END:VALARM
 %s
 X-MICROSOFT-CDO-BUSYSTATUS:%s
 END:VEVENT
 
 END:VCALENDAR"
-
+  
   # Fill in template with input values
   if (is.null(recurrence_rule)) {
     ics <- sprintf(
@@ -84,7 +79,6 @@ END:VCALENDAR"
       tz,
       title,
       location,
-      reminder_time,
       "",
       freebusy
     )
@@ -96,11 +90,11 @@ END:VCALENDAR"
       tz,
       title,
       location,
-      reminder_time,
       paste0("RRULE:", recurrence_rule),
       freebusy
     )
   }
-
+  
   return(ics)
 }
+
