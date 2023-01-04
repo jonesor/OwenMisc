@@ -12,7 +12,7 @@
 #' @param alarm a logical argument for whether a 5 minute alarm should be added to the event.
 #' @param uid_seed a seed for the unique id generation.
 #' @return A character string containing the iCalendar entry in plain text format.
-#' 
+#'
 #' @importFrom TeachingDemos char2seed
 #' @importFrom lubridate tz
 #' @export
@@ -21,41 +21,42 @@
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room", "FREQ=DAILY;COUNT=5")
 #'
 generate_ics <- function(start_datetime, duration, time_zone, title, location, freebusy = "BUSY", alarm = TRUE, uid_seed = NULL) {
-  
-  if(is.null(uid_seed)){
+  if (is.null(uid_seed)) {
     set.seed(as.numeric(Sys.time()))
-    }else{set.seed(uid_seed)}
-  
+  } else {
+    set.seed(uid_seed)
+  }
+
   # Validation
   if (is.null(uid_seed)) {
     warning("A NULL uid will produce identical uids when multiple ics are generated rapidly.")
   }
-  
+
   # Check that duration is a positive numeric value
   if (!is.numeric(duration) || !duration > 0) {
     stop("Error: duration must be a positive numeric value")
   }
-  
+
   # Check that time_zone is a valid time zone identifier
   if (!time_zone %in% OlsonNames()) {
     stop("Error: time_zone must be a valid time zone identifier")
   }
-  
+
   # Convert time zone to tz object
   tz <- tz(time_zone)
-  
+
   # Check that start_datetime is a character string in the correct format
   start_time <- strptime(start_datetime, format = "%Y-%m-%d %H:%M:%S", tz = tz)
   if (is.na(start_time)) {
     stop("Error: start_datetime must be a character string in the format YYYY-MM-DD HH:MM:SS")
   }
-  
+
   # Convert duration to seconds
   duration_secs <- duration * 60
-  
+
   # Calculate end time
   end_time <- start_time + duration_secs
-  
+
   # Define iCalendar template
   ics_template_1 <- "BEGIN:VCALENDAR
 PRODID:-//jonesor/ical //EN
@@ -70,45 +71,44 @@ TZID:%s
 SUMMARY:%s
 LOCATION:%s
 %s"
-  
+
   ics_template_alarm <- "BEGIN:VALARM
 TRIGGER:-PT5M
 ACTION:DISPLAY
 DESCRIPTION:Reminder
-END:VALARM"
-  
+END:VALARM\n"
+
   ics_template_2 <- "X-MICROSOFT-CDO-BUSYSTATUS:%s
 END:VEVENT
 \n\n
 END:VCALENDAR"
-  
-  if(alarm){
-    ics_template <- paste0(ics_template_1,ics_template_alarm,ics_template_2)
-  }else{
-    ics_template <- paste0(ics_template_1,ics_template_2)
-  }
-  
-  myUUID_a <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 8),collapse = "")
-  myUUID_b <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 4),collapse = "")
-  myUUID_c <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 4),collapse = "")
-  myUUID_d <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 4),collapse = "")
-  myUUID_e <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 12),collapse = "")
-  myUUID <- paste(myUUID_a,myUUID_b,myUUID_c,myUUID_d,myUUID_e,sep = "-")
-  
-  # Fill in template with input values
-    ics <- sprintf(
-      ics_template,
-      myUUID,
-      format(start_time, "%Y%m%dT%H%M%S"),
-      format(end_time, "%Y%m%dT%H%M%S"),
-      tz,
-      title,
-      location,
-      "",
-      freebusy
-    )
 
-  
+  if (alarm) {
+    ics_template <- paste0(ics_template_1, ics_template_alarm, ics_template_2)
+  } else {
+    ics_template <- paste0(ics_template_1, ics_template_2)
+  }
+
+  myUUID_a <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 8), collapse = "")
+  myUUID_b <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 4), collapse = "")
+  myUUID_c <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 4), collapse = "")
+  myUUID_d <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 4), collapse = "")
+  myUUID_e <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 12), collapse = "")
+  myUUID <- paste(myUUID_a, myUUID_b, myUUID_c, myUUID_d, myUUID_e, sep = "-")
+
+  # Fill in template with input values
+  ics <- sprintf(
+    ics_template,
+    myUUID,
+    format(start_time, "%Y%m%dT%H%M%S"),
+    format(end_time, "%Y%m%dT%H%M%S"),
+    tz,
+    title,
+    location,
+    "",
+    freebusy
+  )
+
+
   return(ics)
 }
-
