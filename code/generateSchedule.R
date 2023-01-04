@@ -35,6 +35,7 @@ file <- file("deepWorkSchedule.ics", "w")
 # Loop through events and write each event out.
 for (i in 1:nrow(events)) {
   # Generate iCalendar entry for event
+  cat("Generating",i,"of",nrow(events),"\n")
   ics <- generate_ics(
     start_datetime = events$date_time[i],
     duration = events$Duration[i],
@@ -46,6 +47,8 @@ for (i in 1:nrow(events)) {
   )
 
   # Write iCalendar entry to file
+  cat("Writing to file.\n")
+  
   writeLines(ics, file)
 }
 
@@ -56,6 +59,8 @@ close(file)
 # a single "BEGIN..." and "END..." component wrapping all the individual events.
 
 # Read in the ics file
+cat("Correcting the file to ensure validity...\n")
+
 ics_data <- readLines("deepWorkSchedule.ics")
 ics_data <- ics_data[!ics_data==""]
 
@@ -69,6 +74,10 @@ ics_data <- c("BEGIN:VCALENDAR", ics_data)
 # Add a single VCALENDAR component at the end of the file
 ics_data <- c(ics_data, "END:VCALENDAR")
 
+cat("File corrected...\n")
+
 # Write the modified ics data to a new file
+cat("Writing file to deepWorkSchedule.ics.\n")
+
 writeLines(ics_data, "deepWorkSchedule.ics")
 
