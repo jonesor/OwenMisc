@@ -47,11 +47,11 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add --all
-          #if git diff --quiet; then
-          #    echo "No changes to commit"
-          #else
-          #    git commit -am "add data"
+          git add --all --ignore-removal
+          if git diff --quiet; then
+              echo "No changes to commit"
+          else
+              git commit -am "add data"
               git push
-          #fi
+          fi
 
