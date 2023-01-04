@@ -71,11 +71,18 @@ END:VEVENT
 \n\n
 END:VCALENDAR"
   
+  myUUID_a <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 8),collapse = "")
+  myUUID_b <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 4),collapse = "")
+  myUUID_c <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 4),collapse = "")
+  myUUID_d <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 4),collapse = "")
+  myUUID_e <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 12),collapse = "")
+  myUUID <- paste(myUUID_a,myUUID_b,myUUID_c,myUUID_d,myUUID_e,sep = "-")
+  
   # Fill in template with input values
   if (is.null(recurrence_rule)) {
     ics <- sprintf(
       ics_template,
-      paste(sample(x = c(letters, 0:9, rep("-", 2)), replace = FALSE, size = 25), collapse = ""),
+      myUUID,
       format(start_time, "%Y%m%dT%H%M%S"),
       format(end_time, "%Y%m%dT%H%M%S"),
       tz,
@@ -87,6 +94,7 @@ END:VCALENDAR"
   } else {
     ics <- sprintf(
       ics_template,
+      myUUID,
       format(start_time, "%Y%m%dT%H%M%S"),
       format(end_time, "%Y%m%dT%H%M%S"),
       tz,
