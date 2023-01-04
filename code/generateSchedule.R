@@ -46,6 +46,7 @@ for (i in 1:nrow(events)) {
   
   # Write iCalendar entry to file
   writeLines(ics, file)
+  writeLines(" ", file)
 }
 
 # Close file
@@ -60,10 +61,20 @@ ics_data <- ics_data[!ics_data==""]
 
 # Remove the unnecessary VCALENDAR components
 ics_data <- ics_data[!grepl("BEGIN:VCALENDAR", ics_data)]
+ics_data <- ics_data[!grepl("PRODID:-//jonesor/ical //EN", ics_data)]
+ics_data <- ics_data[!grepl("VERSION:2.0", ics_data)]
+ics_data <- ics_data[!grepl("CALSCALE:GREGORIAN", ics_data)]
+ics_data <- ics_data[!grepl("METHOD:PUBLISH", ics_data)]
+
 ics_data <- ics_data[!grepl("END:VCALENDAR", ics_data)]
 
 # Add a single VCALENDAR component at the beginning of the file
-ics_data <- c("BEGIN:VCALENDAR", ics_data)
+ics_data <- c("BEGIN:VCALENDAR
+PRODID:-//jonesor/ical //EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+", ics_data)
 
 # Add a single VCALENDAR component at the end of the file
 ics_data <- c(ics_data, "END:VCALENDAR")
