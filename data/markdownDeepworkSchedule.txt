@@ -1,9 +1,0 @@
-| Time        | Monday       | Tuesday       | Wednesday      | Thursday       | Friday       |
-|------------|--------------|--------------|----------------|----------------|--------------|
-| 9-9:15am   | Review tasks  | Review tasks  | Review tasks   | Review tasks   | Review tasks |
-| 9:15-11am  | Deep work     | Deep work     | Deep work      | Deep work      | Deep work    |
-| 11am-12pm  | Exercise      | Teaching Prep | Exercise       | Teaching Prep  | Exercise     |
-| 12-12:45pm | Lunch break   | Lunch break   | Lunch break    | Lunch break    | Lunch break  |
-| 12:45-2pm  | Service act.  | Service act.  | Service act.   | Service act.   | Service act. |
-| 2-4pm      | Deep work     | Deep work     | Deep work      | Deep work      | Deep work    |
-| 4-4:15pm   | Review tasks  | Review tasks  | Review tasks   | Review tasks   | Review tasks |
