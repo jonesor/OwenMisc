@@ -19,7 +19,7 @@
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room")
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room", "FREQ=DAILY;COUNT=5")
 #'
-generate_ics <- function(uid_seed = NULL, start_datetime, duration, time_zone, title, location, recurrence_rule = NULL, freebusy = "BUSY") {
+generate_ics <- function(uid_seed = NULL, start_datetime, duration, time_zone, title, location, freebusy = "BUSY") {
   
   if(is.null(uid_seed)){
     set.seed(as.numeric(Sys.time()))
@@ -87,7 +87,6 @@ END:VCALENDAR"
   myUUID <- paste(myUUID_a,myUUID_b,myUUID_c,myUUID_d,myUUID_e,sep = "-")
   
   # Fill in template with input values
-  if (is.null(recurrence_rule)) {
     ics <- sprintf(
       ics_template,
       myUUID,
@@ -99,19 +98,7 @@ END:VCALENDAR"
       "",
       freebusy
     )
-  } else {
-    ics <- sprintf(
-      ics_template,
-      myUUID,
-      format(start_time, "%Y%m%dT%H%M%S"),
-      format(end_time, "%Y%m%dT%H%M%S"),
-      tz,
-      title,
-      location,
-      paste0("RRULE:", recurrence_rule),
-      freebusy
-    )
-  }
+
   
   return(ics)
 }
