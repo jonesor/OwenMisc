@@ -47,6 +47,7 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
+          git status
           git add --all
           if git diff --quiet; then
               echo "No changes to commit"
