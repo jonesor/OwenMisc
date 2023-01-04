@@ -2,6 +2,7 @@
 #'
 #' Generates an iCalendar entry in plain text format for an event with the specified start time, duration, time zone, title, location, and optional recurrence rule.
 #'
+#' @param uid_seed a seed for the unique id generation
 #' @param start_datetime A character string representing the start time of the event in the format "YYYY-MM-DD HH:MM:SS".
 #' @param duration A numeric value representing duration in minutes.
 #' @param time_zone A character string representing the time zone of the event.
@@ -18,15 +19,17 @@
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room")
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room", "FREQ=DAILY;COUNT=5")
 #'
-generate_ics <- function(start_datetime, duration, time_zone, title, location, recurrence_rule = NULL, freebusy = "BUSY") {
+generate_ics <- function(uid_seed = NULL, start_datetime, duration, time_zone, title, location, recurrence_rule = NULL, freebusy = "BUSY") {
   
-  ics_random_seed_text <- paste0(start_datetime, duration, title, location, freebusy)
-  print(ics_random_seed_text)
-  ics_random_seed <- char2seed(ics_random_seed_text, set = FALSE)
-  print(ics_random_seed)
-  set.seed(ics_random_seed)
+  if(is.null(uid_seed)){
+    set.seed(as.numeric(Sys.time()))
+    }else{set.seed(uid_seed)}
   
   # Validation
+  if (is.null(uid_seed)) {
+    warning("A NULL uid will produce identical uids when multiple ics are generated rapidly.")
+  }
+  
   # Check that duration is a positive numeric value
   if (!is.numeric(duration) || !duration > 0) {
     stop("Error: duration must be a positive numeric value")
@@ -59,7 +62,7 @@ VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:ical-%s
+UID:%s
 DTSTART:%s
 DTEND:%s
 TZID:%s
