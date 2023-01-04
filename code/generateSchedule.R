@@ -36,9 +36,10 @@ file <- file("deepWorkSchedule.ics", "w")
 for (i in 1:nrow(events)) {
   # Generate iCalendar entry for event
   ics <- generate_ics(
+    uid_seed = events$date_time[i], 
     start_datetime = events$date_time[i],
     duration = events$Duration[i],
-    time_zone = "Europe/Copenhagen",
+    time_zone = "CET",
     title = events$Activity[i],
     location = "Office", recurrence_rule = NULL, 
     freebusy = as.character(ifelse(grepl(pattern = "Deep|Lunch|Exercise", x = events$Activity[i])>0,"BUSY","FREE"))
