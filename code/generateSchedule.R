@@ -20,7 +20,7 @@ todayDayNumber <- wday(today(),abbr = FALSE, label = FALSE)
 
 startDateOfWeek_Monday <- todayDate - todayDayNumber + 2
 next_work_weeks <- data.frame(date = seq(from = startDateOfWeek_Monday, by = "day", length.out = 21)) |>
-    mutate(Day = wday(date, label = TRUE, abbr = FALSE)) %>% 
+  mutate(Day = wday(date, label = TRUE, abbr = FALSE)) %>% 
   filter(!Day %in% c("Saturday","Sunday"))
 
 events <- left_join(next_work_weeks, events) |>
@@ -35,19 +35,16 @@ file <- file("deepWorkSchedule.ics", "w")
 # Loop through events and write each event out.
 for (i in 1:nrow(events)) {
   # Generate iCalendar entry for event
-  cat("Generating",i,"of",nrow(events),"\n")
   ics <- generate_ics(
     start_datetime = events$date_time[i],
     duration = events$Duration[i],
     time_zone = "Europe/Copenhagen",
     title = events$Activity[i],
-    location = "Office", recurrence_rule = NULL,
+    location = "Office", recurrence_rule = NULL, 
     freebusy = as.character(ifelse(grepl(pattern = "Deep|Lunch|Exercise", x = events$Activity[i])>0,"BUSY","FREE"))
   )
-
-  # Write iCalendar entry to file
-  cat("Writing to file.\n")
   
+  # Write iCalendar entry to file
   writeLines(ics, file)
 }
 
@@ -58,8 +55,6 @@ close(file)
 # a single "BEGIN..." and "END..." component wrapping all the individual events.
 
 # Read in the ics file
-cat("Correcting the file to ensure validity...\n")
-
 ics_data <- readLines("deepWorkSchedule.ics")
 ics_data <- ics_data[!ics_data==""]
 
@@ -73,10 +68,5 @@ ics_data <- c("BEGIN:VCALENDAR", ics_data)
 # Add a single VCALENDAR component at the end of the file
 ics_data <- c(ics_data, "END:VCALENDAR")
 
-cat("File corrected...\n")
-
 # Write the modified ics data to a new file
-cat("Writing file to deepWorkSchedule.ics.\n")
-
 writeLines(ics_data, "deepWorkSchedule.ics")
-
