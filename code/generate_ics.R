@@ -20,8 +20,10 @@
 #'
 generate_ics <- function(start_datetime, duration, time_zone, title, location, recurrence_rule = NULL, freebusy = "BUSY") {
   
-  ics_random_seed_text <- paste0(start_datetime, duration, time_zone, title, location, ifelse(is.null(recurrence_rule),"NULL_value",recurrence_rule), freebusy)
+  ics_random_seed_text <- paste0(start_datetime, duration, title, location, freebusy)
+  print(ics_random_seed_text)
   ics_random_seed <- char2seed(ics_random_seed_text, set = FALSE)
+  print(ics_random_seed)
   set.seed(ics_random_seed)
   
   # Validation
@@ -52,7 +54,7 @@ generate_ics <- function(start_datetime, duration, time_zone, title, location, r
   
   # Define iCalendar template
   ics_template <- "BEGIN:VCALENDAR
-PRODID:-//ATFutures/ical //EN
+PRODID:-//jonesor/ical //EN
 VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
@@ -66,7 +68,7 @@ LOCATION:%s
 %s
 X-MICROSOFT-CDO-BUSYSTATUS:%s
 END:VEVENT
-
+\n\n
 END:VCALENDAR"
   
   # Fill in template with input values
