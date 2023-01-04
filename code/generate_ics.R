@@ -2,7 +2,6 @@
 #'
 #' Generates an iCalendar entry in plain text format for an event with the specified start time, duration, time zone, title, location, and optional recurrence rule.
 #'
-#' @param uid_seed a seed for the unique id generation
 #' @param start_datetime A character string representing the start time of the event in the format "YYYY-MM-DD HH:MM:SS".
 #' @param duration A numeric value representing duration in minutes.
 #' @param time_zone A character string representing the time zone of the event.
@@ -10,6 +9,8 @@
 #' @param location A character string representing the location of the event.
 #' @param recurrence_rule A character string representing the recurrence rule for the event in the format defined by the iCalendar specification.
 #' @param freebusy A character string of FREE or BUSY indicating if the event should be indicated as Free/Busy in Outlook.
+#' @param alarm a logical argument for whether a 5 minute alarm should be added to the event.
+#' @param uid_seed a seed for the unique id generation.
 #' @return A character string containing the iCalendar entry in plain text format.
 #' 
 #' @importFrom TeachingDemos char2seed
@@ -19,7 +20,7 @@
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room")
 #' generate_ics("2022-12-27 15:00:00", 60, "America/New_York", "Meeting", "Conference Room", "FREQ=DAILY;COUNT=5")
 #'
-generate_ics <- function(uid_seed = NULL, start_datetime, duration, time_zone, title, location, freebusy = "BUSY") {
+generate_ics <- function(start_datetime, duration, time_zone, title, location, freebusy = "BUSY", alarm = TRUE, uid_seed = NULL) {
   
   if(is.null(uid_seed)){
     set.seed(as.numeric(Sys.time()))
@@ -56,7 +57,7 @@ generate_ics <- function(uid_seed = NULL, start_datetime, duration, time_zone, t
   end_time <- start_time + duration_secs
   
   # Define iCalendar template
-  ics_template <- "BEGIN:VCALENDAR
+  ics_template_1 <- "BEGIN:VCALENDAR
 PRODID:-//jonesor/ical //EN
 VERSION:2.0
 CALSCALE:GREGORIAN
@@ -68,16 +69,24 @@ DTEND:%s
 TZID:%s
 SUMMARY:%s
 LOCATION:%s
-%s
-BEGIN:VALARM
+%s"
+  
+  ics_template_alarm <- "BEGIN:VALARM
 TRIGGER:-PT5M
 ACTION:DISPLAY
 DESCRIPTION:Reminder
-END:VALARM
-X-MICROSOFT-CDO-BUSYSTATUS:%s
+END:VALARM"
+  
+  ics_template_2 <- "X-MICROSOFT-CDO-BUSYSTATUS:%s
 END:VEVENT
 \n\n
 END:VCALENDAR"
+  
+  if(alarm){
+    ics_template <- paste0(ics_template_1,ics_template_alarm,ics_template_2)
+  }else{
+    ics_template <- paste0(ics_template_1,ics_template_2)
+  }
   
   myUUID_a <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 8),collapse = "")
   myUUID_b <- paste(sample(x = c(letters, 0:9), replace = FALSE, size = 4),collapse = "")
