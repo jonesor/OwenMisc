@@ -48,9 +48,11 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           if git diff --quiet; then
+              git status
               git add .
               git commit -am "add data"
               git push
           else
+              git status
               echo "No changes to commit"
           fi
