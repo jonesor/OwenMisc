@@ -19,7 +19,7 @@ todayDate <- today()
 todayDayNumber <- wday(today(),abbr = FALSE, label = FALSE)
 
 startDateOfWeek_Monday <- todayDate - todayDayNumber + 2
-next_work_weeks <- data.frame(date = seq(from = startDateOfWeek_Monday, by = "day", length.out = 21)) |>
+next_work_weeks <- data.frame(date = seq(from = startDateOfWeek_Monday, by = "day", length.out = 42)) |>
   mutate(Day = wday(date, label = TRUE, abbr = FALSE)) %>% 
   filter(!Day %in% c("Saturday","Sunday"))
 
